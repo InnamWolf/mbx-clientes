@@ -1,0 +1,50 @@
+@import 'variables.scss';
+
+// * ===============================================
+// * Mixing Responsive
+// * ===============================================
+
+@mixin tablet {
+  @media only screen and (min-width: #{$md}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media only screen and (min-width: #{$xl}) {
+    @content;
+  }
+}
+
+@mixin titleOrange {
+  color: $orange;
+  font-weight: bold;
+  font-family: $title;
+  text-align: center;
+  margin-top: 20px;
+}
+
+@mixin titleBlue {
+  color: $blue;
+  font-weight: bold;
+  font-family: $title;
+  text-align: center;
+  margin-top: 20px;
+}
+
+@mixin titleGreen {
+  color: $green;
+  font-weight: bold;
+  font-family: $title;
+  text-align: center;
+  margin-top: 20px;
+}
+
+@mixin subtitle {
+  background-color: lighten($gray, 40%);
+  font-weight: bold;
+  font-family: $title;
+  text-align: center;
+  margin-top: 20px;
+  padding: 5px;
+}
