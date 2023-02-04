@@ -70,7 +70,7 @@ lib js
   ?>
 
   </div>
-
+  <script src="view/js/main.js"></script>
 </body>
 
 </html>

@@ -1,10 +1,18 @@
-@import 'variables.scss';
-@import 'mixin.scss';
 // * ===============================================
-// * INDEX
+// * Utilities
 // * ===============================================
-@import 'login.scss';
+@import 'utilities/variables.scss';
+@import 'utilities/mixin.scss';
 // * ===============================================
-// * FOOTER
+// * Layout
 // * ===============================================
-@import 'footer.scss';
+@import 'layout/nav.scss';
+@import 'layout/footer.scss';
+// * ===============================================
+// * PAGES
+// * ===============================================
+@import 'pages/login.scss';
+// * ===============================================
+// * COMPONENTS
+// * ===============================================
+@import 'components/boton.scss';

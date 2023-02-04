@@ -1,0 +1,129 @@
+.logo {
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  text-align: center;
+  width: 95%;
+  margin: auto;
+  @include desktop {
+    text-align: left;
+    width: 1150px;
+  }
+  img {
+    height: 50px;
+    @include desktop {
+      height: 100px;
+    }
+  }
+}
+// * ===============================================
+// * Nav Movil
+// * ===============================================
+.movil {
+  @include desktop {
+    display: none;
+  }
+  background: $white;
+  margin: auto;
+  font-family: $title;
+  a {
+    text-decoration: none;
+  }
+  .barMenu {
+    align-items: center;
+    display: flex;
+    justify-content: start;
+    padding: 10px;
+    background: $blue;
+    text-align: center;
+    .menu {
+      font-size: 40px;
+      padding-right: 10px;
+    }
+    .fa-bars {
+      color: $white;
+    }
+    h1 {
+      color: $white;
+      margin: auto;
+      font-weight: bold;
+    }
+  }
+
+  .navItem {
+    background: $lightGray;
+    display: none;
+    padding: 10px;
+    .link {
+      border-bottom: 1px solid $white;
+      color: $backBlue;
+      display: block;
+      font-weight: bold;
+      font-size: 15px;
+      margin-top: 10px;
+      padding: 8px 0;
+      &:hover {
+        background: $lightBlue;
+      }
+      i {
+        font-size: 17px;
+        padding-left: 10px;
+      }
+    }
+    .cleanBorder {
+      border-bottom: solid 1px $lightGray;
+    }
+  }
+}
+
+// * ===============================================
+// * Nav Desktop
+// * ===============================================
+
+.desktop {
+  display: none;
+  @include desktop {
+    display: block;
+    margin: auto;
+    font-family: $title;
+    .navItem {
+      background: $blue;
+      margin-top: 10px;
+      text-align: center;
+      padding: 10px;
+      h1 {
+        color: $white;
+        margin: auto;
+        font-weight: bold;
+      }
+    }
+    .navSubItem {
+      background: $lightGray;
+      .nav-pills .nav-link {
+        border-radius: 0;
+        height: 60px;
+        display: flex;
+        align-items: center;
+      }
+      .navIn {
+        width: 1150px;
+        margin: auto;
+        li {
+          border-right: solid $white 1px;
+          a {
+            color: $backBlue;
+            font-weight: bold;
+            text-align: center;
+            transition: all 0.5s ease-in;
+            &:hover {
+              background: $lightBlue;
+            }
+          }
+        }
+        .cleanBorder {
+          border-right: solid 1px $lightGray;
+        }
+      }
+    }
+  }
+}
