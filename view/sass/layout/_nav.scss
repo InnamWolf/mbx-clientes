@@ -65,14 +65,13 @@
       &:hover {
         background: $lightBlue;
       }
-      i {
-        font-size: 17px;
-        padding-left: 10px;
-      }
     }
     .cleanBorder {
       border-bottom: solid 1px $lightGray;
     }
+  }
+  .fa-solid {
+    font-size: 20px;
   }
 }
 
@@ -104,6 +103,8 @@
         height: 60px;
         display: flex;
         align-items: center;
+        margin-right: 10px;
+        margin-left: 10px;
       }
       .navIn {
         width: 1150px;
@@ -123,6 +124,9 @@
         .cleanBorder {
           border-right: solid 1px $lightGray;
         }
+      }
+      .fa-solid {
+        font-size: 40px;
       }
     }
   }
