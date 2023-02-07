@@ -13,7 +13,7 @@ Movil Nav
     <a href="#" class="link"><i class="fa-solid fa-mobile"></i>&nbsp;&nbsp;Pago en línea</a>
     <a href="#" class="link"><i class="fa-solid fa-file-invoice-dollar"></i>&nbsp;&nbsp;Cuenta en Cheques</a>
     <a href="#" class="link"><i class="fa-solid fa-handshake-simple"></i>&nbsp;&nbsp;Convenios y Alianzas</a>
-    <a href="#" class="link cleanBorder"><i class="fa-solid fa-arrow-right-from-bracket"></i>&nbsp;&nbsp;Salir</a>       
+    <a href="login" class="link cleanBorder"><i class="fa-solid fa-arrow-right-from-bracket"></i>&nbsp;&nbsp;Salir</a>       
   </div>        
 </nav>
 
@@ -32,7 +32,7 @@ Desktop Nav
       <li class="nav-item"><a class="nav-link" href="#"><i class="fa-solid fa-mobile"></i>&nbsp;&nbsp;Pago <br>&nbsp;&nbsp;en línea</a></li>      
       <li class="nav-item"><a class="nav-link" href="#"><i class="fa-solid fa-file-invoice-dollar"></i>&nbsp;&nbsp;Cuenta en <br>Cheques</a></li>      
       <li class="nav-item"><a class="nav-link" href="#"><i class="fa-solid fa-handshake-simple"></i>&nbsp;&nbsp;Convenios <br>y Alianzas</a></li>      
-      <li class="nav-item cleanBorder"><a class="nav-link" href="#"><i class="fa-solid fa-arrow-right-from-bracket"></i>&nbsp;&nbsp;Salir</a></li>      
+      <li class="nav-item cleanBorder"><a class="nav-link" href="login"><i class="fa-solid fa-arrow-right-from-bracket"></i>&nbsp;&nbsp;Salir</a></li>      
     </ul>
   </div>  
 </nav>
