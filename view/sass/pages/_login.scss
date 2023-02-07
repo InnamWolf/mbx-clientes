@@ -61,6 +61,25 @@
           background: $gray;
           margin-top: 20px;
         }
+        [type='submit'] {
+          border-radius: 5px;
+          background-color: $blue;
+          width: 240px;
+          padding: 5px;
+          text-align: center;
+          color: $white;
+          font-family: $text;
+          transition: all 0.5s ease;
+          margin: auto;
+          font-weight: bold;
+          text-decoration: none;
+          border: none;
+          &:hover {
+            background: darken($blue, 8%);
+            cursor: pointer;
+            color: $white;
+          }
+        }
       }
     }
   }
