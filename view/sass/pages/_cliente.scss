@@ -1,0 +1,63 @@
+.cliente {
+  width: 95%;
+  margin: auto;
+  @include desktop {
+    width: 1150px;
+  }
+  .cliente__in {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 20px;
+    text-align: center;
+    .titulo {
+      p {
+        font-size: 10px;
+        @include desktop {
+          font-size: 24px;
+        }
+        @include tablet {
+          font-size: 20px;
+        }
+      }
+      .etiNombre {
+        font-size: 14px;
+        font-weight: bold;
+        @include desktop {
+          font-size: 32px;
+        }
+        @include tablet {
+          font-size: 24px;
+        }
+      }
+      .blue {
+        color: $blue;
+        font-size: 12px;
+        @include desktop {
+          font-size: 28px;
+        }
+        @include tablet {
+          font-size: 22px;
+        }
+      }
+    }
+    .imgRight {
+      //background-image: url('../img/login_img.jpg');
+      background: $yellow;
+      background-position: auto;
+      background-size: cover;
+      background-repeat: no-repeat;
+      position: relative;
+      height: 200px;
+      width: 250px;
+      @include desktop {
+        height: 450px;
+        width: 600px;
+      }
+      @include tablet {
+        height: 350px;
+        width: 500px;
+      }
+    }
+  }
+}
