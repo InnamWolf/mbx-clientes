@@ -12,26 +12,20 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
       <!-- Boostrap -->
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
-      <!-- AnimateCss -->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />  
-      <!-- Carrusel -->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css" />
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
-      <!-- <link rel="stylesheet" href="view/css/owl.carousel.min.css"> -->
       <!--===============================================
       lib js
       =================================================-->
-      <!-- JavaScript Bundle with Popper -->
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
       <!-- Jquery -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-      <!-- Carousel -->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
       <link rel="icon" href="view/img/icono_MB.png" sizes="64x64" />
       <title>Mexicana de Becas - Fideicomiso educativo</title>
       </head>
     <body>
       <div class="wrapper">
+        <?php 
+          session_start();
+        ?>
         <?php 
           //* ===============================================
           //* CABECERA
@@ -43,8 +37,21 @@
           if(isset($_GET["url"])){
 
             if($_GET["url"] == "login" ||
-              $_GET["url"] == "cliente"){
-              if($_GET["url"] == "cliente"){
+              $_GET["url"] == "cliente" ||
+              $_GET["url"] == "PlnPag" ||
+              $_GET["url"] == "EdoSdoActi" ||
+              $_GET["url"] == "PlnPagFact" ||
+              $_GET["url"] == "PlnPagBanco" ||
+              $_GET["url"] == "PlnPagBancoCIE" ||
+              $_GET["url"] == "AlianzaLeader" ||
+              $_GET["url"] == "salir"){
+              if($_GET["url"] == "cliente" ||
+              $_GET["url"] == "PlnPag" ||
+              $_GET["url"] == "EdoSdoActi" ||
+              $_GET["url"] == "PlnPagFact" ||
+              $_GET["url"] == "PlnPagBanco" ||
+              $_GET["url"] == "PlnPagBancoCIE" ||
+              $_GET["url"] == "AlianzaLeader"){
                 //* ===============================================
                 //* MOBILE AND PC MENU
                 //* ===============================================
