@@ -1,117 +1,230 @@
-<?php 
-  include ('view/pages/credencial.php');
+  <!-- Jquery -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script LANGUAGE="JavaScript"> 
+<!--
+ 
+// Copyright (c) 2000 internet.com Corp. 
+// http://www.webreference.com/js/
+// License is granted if and only if this entire
+// copyright notice is included. By Tomer Shiran.
+ 
+function launch(newURL, newName, newFeatures, orgName) {
+  var remote = open(newURL, newName, newFeatures);
+  if (remote.opener == null)
+    remote.opener = window;
+  remote.opener.name = orgName;
+  return remote;
+}
+ 
+function launchRemote() {
+  myRemote = launch("http://www.becasmb.com/multibbvpagos/pagolinea.html", "myRemote", "height=400,width=110,channelmode=0,dependent=0,directories=1,fullscreen=0,location=1,menubar=0,resizable=0,scrollbars=0,status=0,toolbar=0", "myWindow");
+}
+ 
+// -->
+</script>
+
+<?php
+
+
+
+session_name("helpdesk");
+session_start();
+$HlpDskDesNom = $_SESSION[HlpDskDesNom];
+$HlpDskDesTip = $_SESSION[HlpDskDesTip];
+//$HlpDskIdeUsu = '      ';
+//if (isset($_SESSION[HlpDskIdeUsu])) { $HlpDskIdeUsu = $_SESSION[HlpDskIdeUsu]; };
+$HlpDskIdeUsu = $_SESSION[HlpDskIdeUsu];
+
+if ($HlpDskIdeUsu==""){
+echo "Acceso No Valido";
+exit;
+}
+setlocale(LC_TIME, 'es_ES.UTF-8');  // para espa�ol de mexico // para espa�ol de mexico
+require("fechas.php"); 
+
+include("../AtnLinea/Config2.php");
+mb_connect();
+  //* ===============================================
+  //* NAVEGACION
+  //* ===============================================    
+  include_once '../mbweb/components/nav.php'; 
 ?>
+<link rel="stylesheet" href="style/style1.css">
 <style>
-  #cajaPrincipal{
-    width: 95%;
+  .cajaPrincipal{
     margin: auto;
-    margin-top: 20px;
   }
 </style>
+<!-- <style type="text/css">
+<!--
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+.Estilo3 {font-family: "Times New Roman", Times, serif; font-size: 12px; }
+.Estilo4 {font-family: "Times New Roman", Times, serif; font-size: 12px; }
+.Estilo5 {font-size: 10px}
+
+</style> -->
+
 <div id="cajaPrincipal">
+<form name="suscripcion" action="<?= $_SERVER[PHP_SELF] ?>" method="post">
+<input type="hidden" name="Procesar" value="Enviar">
+<?
+if (isset($_POST['Contrato'])) 
+   {
+   $Contrato = $_POST['Contrato'];
+   }
+   else
+   {
+   $query  = "Select top 1 contrato FROM s04a2vta where suscriptor='".$HlpDskIdeUsu."' or suscriptorb='".$HlpDskIdeUsu."' ORDER BY contrato";
+// echo $query;
+   $res = mb_query($query);
+   $Contrato = '';
+   if (mssql_num_rows($res) > 0) 
+      {
+      $result=mssql_fetch_array($res);
+      $Contrato = $result[contrato];
+	  };
+   };
+// echo " Suscriptor=".$HlpDskIdeUsu." Contrato=".$Contrato." ";
+$res = mb_query("select getdate() as FecAct ");
+$result=mssql_fetch_array($res);
+$FecAct = $result[FecAct];
+$FecAct = substr($FecAct,0,11);
+$res = mb_query("select tipo_contrato, f_base as FecBas, Nivel, estatus, cplan, unidades, rentabilidad, suscriptor, suscriptorb, beneficiario from s04a2vta where contrato='".$Contrato."'");
+$result=mssql_fetch_array($res);
+$TipCon =$result[tipo_contrato];
+$FecBas = $result[FecBas];
+//$FecBas = substr($FecBas,0,11);
+$FecBas=strtoupper($FecBas);
+ $FecBas=str_replace("ENE",'01',$FecBas);
+   $FecBas=str_replace("FEB",'02',$FecBas);
+   $FecBas=str_replace("MAR",'03',$FecBas);
+   $FecBas=str_replace("ABR",'04',$FecBas);
+   $FecBas=str_replace("MAY",'05',$FecBas);
+   $FecBas=str_replace("JUN",'06',$FecBas);
+   $FecBas=str_replace("JUL",'07',$FecBas);
+   $FecBas=str_replace("AGO",'08',$FecBas);
+   $FecBas=str_replace("SEP",'09',$FecBas);
+   $FecBas=str_replace("OCT",'10',$FecBas);
+   $FecBas=str_replace("NOV",'11',$FecBas);
+   $FecBas=str_replace("DIC",'12',$FecBas);
+   $FecBas=substr($FecBas, 0, 10);
+  $fm=substr($FecBas, 0,2);
+  $fd=substr($FecBas, 3,2);
+  $fy=substr($FecBas, 6,10);
+  $FecBas="$fd/$fm/$fy";
 
-  <form method="post">
-    <table width="96%" border="1" bordercolor="#3399FF">
-      <tr>
-        <td colspan ="2" width="34%">
-          <div align="center" class="Estilo3">
-            <font class="Estilo4"><strong>Seleccione Contrato:</strong></font> 
-            <select name="Contrato" id="Contrato" class="Estilo3" onchange="this.form.submit()">
-              <?php
-                $tabla = "s04a2vta";
-                $datos = array("suscriptor" => $_SESSION["HlpDskIdeUsu"],
-                  "suscriptorb" => $_SESSION["HlpDskIdeUsu"]);
-                $respuesta = ModeloReportes::mdlMostrarContratos($tabla, $datos);
-                foreach($respuesta as $key => $contratos){
-                  echo "<option value=\"". $contratos["contrato"]."\"";
-                  if ($_POST["Contrato"] == $contratos["contrato"]){
-                    echo " selected";
-                  }
-                  echo ">".$contratos["contrato"]."</option>";
-                }
-              ?>
-            </select>
-          </div>
-        </td>
-        <td width="28%"><p align="center" class="Estilo5"><span class="Estilo5"><?php echo $_SESSION["HlpDskDesNom"] ?>&nbsp; </p>    </td>
-        <td width="16%"><p align="center" class="Estilo4"><?php echo $_SESSION["HlpDskDesTip"] ?>&nbsp;: <?php echo $_SESSION["HlpDskIdeUsu"] ?></p>    </td>
-        <td colspan ="2" width="22%"><p align="center" class="Estilo4"><font color="#FFFFFF"><strong><font color="#000000">PLAN DE PAGOS</font></strong></font></p></td>
-      </tr>
-    </table>
-  </form>
+$NivCon = $result[Nivel];
+$Estatus = $result[estatus];
+$Plan = $result[cplan];
+$Unidades = $result[unidades];
+$Rentabilidad = $result[rentabilidad];
+$Suscriptor = $result[suscriptor];
+$Suscriptorb = $result[suscriptorb];
+$Beneficiario = $result[beneficiario];
+$res = mb_query("select nombres+' '+ap_paterno+' '+ap_materno as NomSus, domicilio, colonia, ciudad, estado, cp, tel_casa, email from s03a2sus where suscriptor='".$Suscriptor."'");
+$result=mssql_fetch_array($res);
+$NomSus = $result[NomSus];
+$DomSus = $result[domicilio];
+$ColSus = $result[colonia];
+$CiuSus = $result[ciudad];
+$EdoSus = $result[estado];
+$CpoSus = $result[cp];
+$tel_casa = $result[tel_casa];
+$email = $result[email];
 
-  <table width="96%">
-    <tr>
-      <td colspan="6"></td>
-    </tr>
-  </table>
+$res = mb_query("select nombres+' '+ap_paterno+' '+ap_materno as NomSusB from s03a2sus where suscriptor='".$Suscriptorb."'");
+$result=mssql_fetch_array($res);
+$NomSusB = $result[NomSusB];
+$res = mb_query("select nombres+' '+ap_paterno+' '+ap_materno as NomBen from s03a2ben where beneficiario='".$Beneficiario."'");
+$result=mssql_fetch_array($res);
+$NomBen = $result[NomBen];
+?>
 
-  <?php
-    $valor = $_POST["Contrato"];
-    $reportes = ControladorReportes::ctrDetalleContratos($valor);
-  ?>
-  <table width="96%" border="1" bordercolor="#3399FF">
-    <tr bordercolor="#6699FF" bgcolor="#CCCCCC"> 
-      <td colspan="4"><font face="Times New Roman, Times, serif" class="Estilo4"><strong>DATOS DE CONTRATO</strong></font></td>
-      <td><font class="Estilo4">Fecha:</font></td>
-      <td><div align="right" class="Estilo4"><?php echo $reportes["FecAct"] ?></div></td>
-    </tr>
-    
-    <tr> 
-      <td colspan="3" bordercolor="#6699FF"><span class="Estilo3">Suscriptor:</span><font class="Estilo4">      <?php echo $reportes["NomSus"] ?> / <?php echo $reportes["NomSusB"] ?></font></td>
-      <td bordercolor="#6699FF"><div align="center" class="Estilo4"><?php echo $reportes["TipCon"] ?></div></td>
-      <td width="20%" bordercolor="#6699FF"><font class="Estilo4">No. de Contrato:</font></td>
-      <td width="14%" bordercolor="#6699FF"> <div align="right" class="Estilo4"><?php echo $reportes["Contrato"] ?></div></td>
-    </tr>
-      
-    <tr> 
-      <td colspan="3" bordercolor="#6699FF" class="Estilo4">Beneficiario:<font size="2"> <?php echo $reportes["NomBen"] ?></font></td>
-      <td bordercolor="#6699FF"><div align="center" class="Estilo4"><?php echo $reportes["NivCon"] ?></div></td>
-      <td bordercolor="#6699FF"><font class="Estilo4">Fecha Base:</font></td>
-      <td bordercolor="#6699FF"> <div align="right" class="Estilo4"><?php echo $reportes["FecBas"] ?></div></td>
-    </tr>
-      
-    <tr> 
-      <td colspan="3" bordercolor="#6699FF" class="Estilo4"><?php echo $reportes["DomSus"] ?>&nbsp;</td>
-      <td width="12%" bordercolor="#6699FF"><div align="center" class="Estilo4"><?php echo $reportes["Estatus"] ?></div></td>
-      <td bordercolor="#6699FF"><font class="Estilo4 Estilo5">Tipo de Plan:</font></td>
-      <td bordercolor="#6699FF"> <div align="right" class="Estilo4"><?php echo $reportes["Plan"] ?></div></td>
-    </tr>
-    
-    <tr> 
-      <td colspan="4" bordercolor="#6699FF" class="Estilo4"><?php echo $reportes["ColSus"] ?>&nbsp;</td>
-      <td bordercolor="#6699FF"><font class="Estilo4">Unidades:</font></td>
-      <td bordercolor="#6699FF"> <div align="right" class="Estilo4"><?php echo $reportes["Unidades"] ?></div></td>
-    </tr>
-    
-    <tr> 
-      <td colspan = "2" width="28%" height="21" bordercolor="#6699FF" class="Estilo4"><?php echo $reportes["CiuSus"] ?>&nbsp;</td>
-      <td width="26%" bordercolor="#6699FF"><?php echo $reportes["EdoSus"] ?>&nbsp;</td>
-      <td bordercolor="#6699FF"><span class="Estilo4">Cod.Pos:</span> <?php echo $reportes["CpoSus"] ?>&nbsp;</td>
-      <td bordercolor="#6699FF"><font size="2" class="Estilo4">A&ntilde;o de Rentabilidad:</font></td>
-      <td bordercolor="#6699FF"> <div align="right" class="Estilo4"><?php echo $reportes["Rentabilidad"] ?></div></td>
-    </tr>
-  </table>
-
-  <table width="96%">
-    <tr>
-      <td colspan="6"></td>
-    </tr>
-  </table>
-
-  <table width="96%" border="1" bordercolor="#3399FF">
-    <tr>
-      <td width="19%"><font color="#FFFFFF"><IMG height=41 src="http://www.mb.com.mx/imagenes/Bancomer.jpg" width=171 border=0></font></td>
-      <td width="12%" class="Estilo4"><p align="center" class="Estilo4">No. Convenio</p><p align="center"><strong>9555</strong></p></td>
-      <td width="19%"><font color="#FFFFFF"><IMG height=42 src="http://www.mb.com.mx/imagenes/Banamex.jpg" width=174 border=0></font></td>
-      <td width="15%" class="Estilo4"><p align="center" class="Estilo4">No. Cuenta</p><p align="center"><strong>947 - 6547382</strong></p></td>
-      <td width="21%"><font color="#FFFFFF"><IMG height=42 src="http://www.mb.com.mx/imagenes/Serfin.jpg" width=162 border=0></font></td>
-      <td width="14%" class="Estilo5"><p align="center" class="Estilo4">No. Cuenta</p><p align="center"><strong>65501600433</strong></p></td>
-    </tr>
-  </table>
-
-
-
+<table width="96%" border="1" bordercolor="#3399FF">
+  <tr>
+    <td width="34%">
+      <div align="center" class="Estilo3"><font class="Estilo4"><strong>Seleccione Contrato:</strong></font> 
+         
+        <select name="Contrato" class="Estilo3" onChange="submit();">
+          <?php
+			$result = mb_query("SELECT contrato FROM s04a2vta where suscriptor='".$HlpDskIdeUsu."' or suscriptorb='".$HlpDskIdeUsu."' ORDER BY contrato");
+			while ($contratos = mssql_fetch_object($result))
+				{
+				echo "<option value=\"". $contratos->contrato."\"";
+				if ($_POST[Contrato] == $contratos->contrato)
+					{
+					echo " selected";
+					}
+				echo ">".$contratos->contrato."</option>";
+				}
+      ?>
+        </select>
+    </div></td>
+    <td width="28%"><p align="center" class="Estilo5"><span class="Estilo5"><?php echo $HlpDskDesNom ?>&nbsp; </p>    </td>
+    <td width="16%"><p align="center" class="Estilo4"><?php echo $HlpDskDesTip ?>&nbsp;: <?php echo $HlpDskIdeUsu ?></p>    </td>
+    <td width="22%"><p align="center" class="Estilo4"><font color="#FFFFFF"><strong><font color="#000000">PLAN 
+    DE PAGOS</font></strong></font></p></td>
+  </tr>
+</table>
+<table width="96%" border="1" bordercolor="#6699FF">
+  <tr bordercolor="#6699FF" bgcolor="#CCCCCC"> 
+    <td colspan="3"><font face="Times New Roman, Times, serif" class="Estilo4"><strong>DATOS 
+      DE CONTRATO</strong></font></td>
+    <td><font class="Estilo4">Fecha:</font></td>
+    <td><div align="right" class="Estilo4"><?php echo $FecAct ?></div></td>
+  </tr>
+  <tr> 
+    <td colspan="2" bordercolor="#6699FF"><span class="Estilo3">Suscriptor:</span><font class="Estilo4">      <?php echo $NomSus ?> / <?php echo $NomSusB ?></font></td>
+    <td bordercolor="#6699FF"><div align="center" class="Estilo4"><?php echo $TipCon ?></div></td>
+    <td width="20%" bordercolor="#6699FF"><font class="Estilo4">No. de Contrato:</font></td>
+    <td width="14%" bordercolor="#6699FF"> <div align="right" class="Estilo4"><?php echo $Contrato ?></div></td>
+  </tr>
+  <tr> 
+    <td colspan="2" bordercolor="#6699FF" class="Estilo4">Beneficiario:<font size="2"> <?php echo $NomBen ?></font></td>
+    <td bordercolor="#6699FF"><div align="center" class="Estilo4"><?php echo $NivCon ?></div></td>
+    <td bordercolor="#6699FF"><font class="Estilo4">Fecha Base:</font></td>
+    <td bordercolor="#6699FF"> <div align="right" class="Estilo4"><?php echo $FecBas ?></div></td>
+  </tr>
+  <tr> 
+    <td colspan="2" bordercolor="#6699FF" class="Estilo4"><?php echo $DomSus ?>&nbsp;</td>
+    <td width="12%" bordercolor="#6699FF"><div align="center" class="Estilo4"><?php echo $Estatus ?></div></td>
+    <td bordercolor="#6699FF"><font class="Estilo4 Estilo5">Tipo de Plan:</font></td>
+    <td bordercolor="#6699FF"> <div align="right" class="Estilo4"><?php echo $Plan ?></div></td>
+  </tr>
+  <tr> 
+    <td colspan="3" bordercolor="#6699FF" class="Estilo4"><?php echo $ColSus ?>&nbsp;</td>
+    <td bordercolor="#6699FF"><font class="Estilo4">Unidades:</font></td>
+    <td bordercolor="#6699FF"> <div align="right" class="Estilo4"><?php echo $Unidades ?></div></td>
+  </tr>
+  <tr> 
+    <td width="28%" height="21" bordercolor="#6699FF" class="Estilo4"><?php echo $CiuSus ?>&nbsp;</td>
+    <td width="26%" bordercolor="#6699FF"><?php echo $EdoSus ?>&nbsp;</td>
+    <td bordercolor="#6699FF"><span class="Estilo4">Cod.Pos:</span> <?php echo $CpoSus ?>&nbsp;</td>
+    <td bordercolor="#6699FF"><font size="2" class="Estilo4">A&ntilde;o de Rentabilidad:</font></td>
+    <td bordercolor="#6699FF"> <div align="right" class="Estilo4"><?php echo $Rentabilidad ?></div></td>
+  </tr>
+</table>
+<table width="96%" border="1" bordercolor="#3399FF">
+  <tr> 
+    <td width="19%"><font color="#FFFFFF"><IMG height=41 
+src="http://www.mb.com.mx/imagenes/Bancomer.jpg" width=171 border=0></font></td>
+    <td width="12%" class="Estilo4"><p align="center" class="Estilo4">No. Convenio</p>
+      <p align="center"><strong>9555</strong></p></td>
+    <td width="19%"><font color="#FFFFFF"><IMG height=42 
+src="http://www.mb.com.mx/imagenes/Banamex.jpg" width=174 border=0></font></td>
+    <td width="15%" class="Estilo4"><p align="center" class="Estilo4">No. Cuenta</p>
+      <p align="center"><strong>947 - 6547382</strong></p></td>
+    <td width="21%"><font color="#FFFFFF"><IMG height=42 
+src="http://www.mb.com.mx/imagenes/Serfin.jpg" width=162 border=0></font></td>
+    <td width="14%" class="Estilo5"><p align="center" class="Estilo4">No. Cuenta</p>
+      <p align="center"><strong>65501600433</strong></p></td>
+  </tr>
+</table>
 <p class="Estilo4">Estimado Suscriptor:</p>
 <p align="justify" class="Estilo4">En el Banco donde realice su aportaci&oacute;n, 
   deber&aacute; indicar al cajero el No. de Convenio &oacute; No. de Cuenta correspondiente, 
